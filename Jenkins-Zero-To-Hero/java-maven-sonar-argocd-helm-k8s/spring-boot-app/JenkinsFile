@@ -11,15 +11,6 @@ pipeline {
         cleanWs() // Clean the workspace before starting
       }
     }
-    stage('Checkout') {
-      steps {
-        script {
-          sh 'sudo chown -R jenkins:jenkins .' // Ensure Jenkins has permissions
-          sh 'echo passed'
-          // git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
-        }
-      }
-    }
     stage('Build and Test') {
   steps {
     script {
