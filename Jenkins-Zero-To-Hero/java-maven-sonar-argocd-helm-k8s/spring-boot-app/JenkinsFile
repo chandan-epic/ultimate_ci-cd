@@ -6,16 +6,16 @@ pipeline {
     }
   }
   stages {
-    stage('Checkout') {
-      steps {
-       git branch: 'main', url: 'https://github.com/chandan-epic/ultimate-ci-cd'
-                script {
-                    dir('Jenkins-Zero-To-Hero/java-maven-sonar-argocd-helm-k8s/spring-boot-app/') {
-                        checkout scm
-                    }
-                }
-            }
-    }
+    // stage('Checkout') {
+    //   steps {
+    //    git branch: 'main', url: 'https://github.com/chandan-epic/ultimate-ci-cd'
+    //             script {
+    //                 dir('Jenkins-Zero-To-Hero/java-maven-sonar-argocd-helm-k8s/spring-boot-app/') {
+    //                     checkout scm
+    //                 }
+    //             }
+    //         }
+    // }
     stage('Build and Test') {
       steps {
         sh 'ls -ltr'
