@@ -13,12 +13,19 @@ pipeline {
       }
     }
     stage('Build and Test') {
-      steps {
-        sh 'ls -ltr'
-        // build the project and create a JAR file
-        sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
+  steps {
+    script {
+      sh 'ls -ltr'
+      // Check if the directory exists before running the mvn command
+      if (fileExists('Jenkins-Zero-To-Hero/java-maven-sonar-argocd-helm-k8s/spring-boot-app')) {
+        sh 'cd Jenkins-Zero-To-Hero/java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
+      } else {
+        error('Directory not found: Jenkins-Zero-To-Hero/java-maven-sonar-argocd-helm-k8s/spring-boot-app')
       }
     }
+  }
+}
+
     stage('Static Code Analysis') {
       environment {
         SONAR_URL = "http://localhost:9000"
