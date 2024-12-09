@@ -6,17 +6,17 @@ pipeline {
     }
   }
   stages {
-   stage('Clean Workspace') {
-      steps {
-        cleanWs() // This will clean the workspace before the job starts
-      }
-    }
-   stage('Checkout') {
-      steps {
-        sh 'echo passed'
-        //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
-      }
-    }
+  //  stage('Clean Workspace') {
+  //     steps {
+  //       cleanWs() // This will clean the workspace before the job starts
+  //     }
+  //   }
+  //  stage('Checkout') {
+  //     steps {
+  //       sh 'echo passed'
+  //       //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
+  //     }
+  //   }
     stage('Build and Test') {
   steps {
     script {
