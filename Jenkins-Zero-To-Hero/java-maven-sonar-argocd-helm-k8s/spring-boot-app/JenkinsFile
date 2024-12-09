@@ -5,18 +5,32 @@ pipeline {
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
     }
   }
-  stages {
-  //  stage('Clean Workspace') {
-  //     steps {
-  //       cleanWs() // This will clean the workspace before the job starts
-  //     }
-  //   }
-  //  stage('Checkout') {
-  //     steps {
-  //       sh 'echo passed'
-  //       //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
-  //     }
-  //   }
+  stage('Clean Workspace') {
+      steps {
+        cleanWs() // Clean the workspace before starting
+      }
+    }
+    stage('Checkout') {
+      steps {
+        script {
+          sh 'sudo chown -R jenkins:jenkins .' // Ensure Jenkins has permissions
+          sh 'echo passed'
+          // git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
+        }
+      }
+    }
+    stage('Build and Test') {
+      steps {
+        script {
+          sh 'ls -ltr'
+          if (fileExists('Jenkins-Zero-To-Hero/java-maven-sonar-argocd-helm-k8s/spring-boot-app')) {
+            sh 'cd Jenkins-Zero-To-Hero/java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
+          } else {
+            error('Directory not found: Jenkins-Zero-To-Hero/java-maven-sonar-argocd-helm-k8s/spring-boot-app')
+          }
+        }
+      }
+    }
     stage('Build and Test') {
   steps {
     script {
