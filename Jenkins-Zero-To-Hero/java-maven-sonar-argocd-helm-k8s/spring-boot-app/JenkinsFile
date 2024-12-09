@@ -5,33 +5,27 @@ pipeline {
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
     }
   }
-  stages{
-  stage('Clean Workspace') {
+  stages {
+    stage('Checkout') {
       steps {
-        cleanWs() // Clean the workspace before starting
+        sh 'echo passed'
+        //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
       }
     }
     stage('Build and Test') {
-  steps {
-    script {
-      sh 'ls -ltr'
-      // Check if the directory exists before running the mvn command
-      if (fileExists('Jenkins-Zero-To-Hero/java-maven-sonar-argocd-helm-k8s/spring-boot-app')) {
-        sh 'cd Jenkins-Zero-To-Hero/java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
-      } else {
-        error('Directory not found: Jenkins-Zero-To-Hero/java-maven-sonar-argocd-helm-k8s/spring-boot-app')
+      steps {
+        sh 'ls -ltr'
+        // build the project and create a JAR file
+        sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
       }
     }
-  }
-}
-
     stage('Static Code Analysis') {
       environment {
         SONAR_URL = "http://localhost:9000"
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-          sh 'cd Jenkins-Zero-To-Hero/java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+          sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
         }
       }
     }
