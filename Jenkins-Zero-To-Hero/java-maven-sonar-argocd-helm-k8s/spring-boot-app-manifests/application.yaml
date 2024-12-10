@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/chandan-epic/ultimate_ci-cd.git'
+    targetRevision: main
+    path: spring-boot-app-manifests
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated: # Uncomment if you want automatic sync
+      prune: true
+      selfHeal: true
